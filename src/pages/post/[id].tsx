@@ -1,16 +1,17 @@
-import { withUrqlClient } from "next-urql";
-import { useEffect, useState } from "react";
-import CreateUrqlClient from "../../utils/CreateUrqlClient";
+import { withUrqlClient } from 'next-urql';
+import { useEffect, useState } from 'react';
+import CreateUrqlClient from '../../utils/CreateUrqlClient';
 
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { EditDeletePostButton } from "../../components/EditDeletePostButtons";
-import Layout from "../../components/Layout";
-import { useMeQuery } from "../../generated/graphql";
-import { useGetPostFromURl } from "../../utils/useGetPostFromUrl";
+import { Box, Flex, Heading } from '@chakra-ui/react';
+import { EditDeletePostButton } from '../../components/EditDeletePostButtons';
+import Layout from '../../components/Layout';
+import { useMeQuery } from '../../generated/graphql';
+import { useGetPostFromURl } from '../../utils/useGetPostFromUrl';
 
 const Post = ({}) => {
 	const [{ data, error, fetching }] = useGetPostFromURl();
-	const [{ data: userData, fetching: userFetching }] = useMeQuery();
+	const [{ data: userData, fetching: userFetching }] =
+		useMeQuery();
 
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => {
@@ -40,12 +41,16 @@ const Post = ({}) => {
 		return <div>you got query failed for some reason</div>;
 	}
 
-	if (typeof window === "undefined") {
+	if (typeof window === 'undefined') {
 		return <>Err...</>;
 	} else {
 		return (
 			<Layout>
-				<Flex width={700} justify={"space-between"}>
+				<Flex
+					marginLeft={5}
+					maxWidth={'100%'}
+					justify={'space-between'}
+				>
 					<Heading mb={4}>{data.post.title}</Heading>
 					<Box>
 						<EditDeletePostButton
@@ -55,10 +60,19 @@ const Post = ({}) => {
 					</Box>
 				</Flex>
 
-				{data?.post.text}
+				<p
+					style={{
+						marginLeft: '15px',
+						marginRight: '15px',
+					}}
+				>
+					{data?.post.text}
+				</p>
 			</Layout>
 		);
 	}
 };
 
-export default withUrqlClient(CreateUrqlClient, { ssr: true })(Post);
+export default withUrqlClient(CreateUrqlClient, {
+	ssr: true,
+})(Post);
